@@ -1,0 +1,293 @@
+{
+  "worst_manufacturers": [
+    {
+      "Class_I": 8,
+      "Class_II": 1,
+      "Class_III": 1,
+      "total_events": 10,
+      "manufacturer_id": 21240
+    },
+    {
+      "Class_I": 7,
+      "Class_II": 1,
+      "Class_III": 1,
+      "total_events": 9,
+      "manufacturer_id": 19483
+    },
+    {
+      "Class_I": 7,
+      "Class_II": 1,
+      "Class_III": 0,
+      "total_events": 8,
+      "manufacturer_id": 21099
+    },
+    {
+      "Class_I": 6,
+      "Class_II": 3,
+      "Class_III": 2,
+      "total_events": 11,
+      "manufacturer_id": 17812
+    },
+    {
+      "Class_I": 6,
+      "Class_II": 2,
+      "Class_III": 2,
+      "total_events": 10,
+      "manufacturer_id": 18254
+    },
+    {
+      "Class_I": 6,
+      "Class_II": 2,
+      "Class_III": 1,
+      "total_events": 9,
+      "manufacturer_id": 21175
+    },
+    {
+      "Class_I": 6,
+      "Class_II": 1,
+      "Class_III": 1,
+      "total_events": 8,
+      "manufacturer_id": 19831
+    },
+    {
+      "Class_I": 6,
+      "Class_II": 0,
+      "Class_III": 0,
+      "total_events": 6,
+      "manufacturer_id": 22634
+    },
+    {
+      "Class_I": 5,
+      "Class_II": 4,
+      "Class_III": 0,
+      "total_events": 9,
+      "manufacturer_id": 16709
+    },
+    {
+      "Class_I": 5,
+      "Class_II": 3,
+      "Class_III": 2,
+      "total_events": 10,
+      "manufacturer_id": 21005
+    },
+    {
+      "Class_I": 5,
+      "Class_II": 2,
+      "Class_III": 2,
+      "total_events": 9,
+      "manufacturer_id": 18038
+    },
+    {
+      "Class_I": 5,
+      "Class_II": 2,
+      "Class_III": 1,
+      "total_events": 8,
+      "manufacturer_id": 13950
+    },
+    {
+      "Class_I": 5,
+      "Class_II": 2,
+      "Class_III": 1,
+      "total_events": 8,
+      "manufacturer_id": 21183
+    },
+    {
+      "Class_I": 5,
+      "Class_II": 2,
+      "Class_III": 1,
+      "total_events": 8,
+      "manufacturer_id": 17563
+    },
+    {
+      "Class_I": 5,
+      "Class_II": 2,
+      "Class_III": 0,
+      "total_events": 7,
+      "manufacturer_id": 17440
+    },
+    {
+      "Class_I": 5,
+      "Class_II": 2,
+      "Class_III": 0,
+      "total_events": 7,
+      "manufacturer_id": 18087
+    },
+    {
+      "Class_I": 5,
+      "Class_II": 2,
+      "Class_III": 0,
+      "total_events": 7,
+      "manufacturer_id": 17974
+    },
+    {
+      "Class_I": 5,
+      "Class_II": 1,
+      "Class_III": 2,
+      "total_events": 8,
+      "manufacturer_id": 15665
+    },
+    {
+      "Class_I": 5,
+      "Class_II": 1,
+      "Class_III": 1,
+      "total_events": 7,
+      "manufacturer_id": 13804
+    },
+    {
+      "Class_I": 5,
+      "Class_II": 1,
+      "Class_III": 1,
+      "total_events": 7,
+      "manufacturer_id": 20901
+    }
+  ],
+  "best_manufacturers": [
+    {
+      "Class_I": 2,
+      "Class_II": 1,
+      "Class_III": 6,
+      "total_events": 9,
+      "manufacturer_id": 14811
+    },
+    {
+      "Class_I": 0,
+      "Class_II": 3,
+      "Class_III": 5,
+      "total_events": 8,
+      "manufacturer_id": 14129
+    },
+    {
+      "Class_I": 1,
+      "Class_II": 2,
+      "Class_III": 5,
+      "total_events": 8,
+      "manufacturer_id": 20293
+    },
+    {
+      "Class_I": 1,
+      "Class_II": 2,
+      "Class_III": 5,
+      "total_events": 8,
+      "manufacturer_id": 16811
+    },
+    {
+      "Class_I": 0,
+      "Class_II": 2,
+      "Class_III": 5,
+      "total_events": 7,
+      "manufacturer_id": 16622
+    },
+    {
+      "Class_I": 1,
+      "Class_II": 1,
+      "Class_III": 5,
+      "total_events": 7,
+      "manufacturer_id": 23212
+    },
+    {
+      "Class_I": 1,
+      "Class_II": 4,
+      "Class_III": 4,
+      "total_events": 9,
+      "manufacturer_id": 16046
+    },
+    {
+      "Class_I": 0,
+      "Class_II": 4,
+      "Class_III": 4,
+      "total_events": 8,
+      "manufacturer_id": 22646
+    },
+    {
+      "Class_I": 2,
+      "Class_II": 3,
+      "Class_III": 4,
+      "total_events": 9,
+      "manufacturer_id": 16686
+    },
+    {
+      "Class_I": 1,
+      "Class_II": 3,
+      "Class_III": 4,
+      "total_events": 8,
+      "manufacturer_id": 15952
+    },
+    {
+      "Class_I": 0,
+      "Class_II": 3,
+      "Class_III": 4,
+      "total_events": 7,
+      "manufacturer_id": 20444
+    },
+    {
+      "Class_I": 0,
+      "Class_II": 3,
+      "Class_III": 4,
+      "total_events": 7,
+      "manufacturer_id": 18886
+    },
+    {
+      "Class_I": 3,
+      "Class_II": 2,
+      "Class_III": 4,
+      "total_events": 9,
+      "manufacturer_id": 18757
+    },
+    {
+      "Class_I": 1,
+      "Class_II": 2,
+      "Class_III": 4,
+      "total_events": 7,
+      "manufacturer_id": 15958
+    },
+    {
+      "Class_I": 1,
+      "Class_II": 2,
+      "Class_III": 4,
+      "total_events": 7,
+      "manufacturer_id": 16079
+    },
+    {
+      "Class_I": 0,
+      "Class_II": 2,
+      "Class_III": 4,
+      "total_events": 6,
+      "manufacturer_id": 18380
+    },
+    {
+      "Class_I": 0,
+      "Class_II": 2,
+      "Class_III": 4,
+      "total_events": 6,
+      "manufacturer_id": 22964
+    },
+    {
+      "Class_I": 0,
+      "Class_II": 2,
+      "Class_III": 4,
+      "total_events": 6,
+      "manufacturer_id": 13812
+    },
+    {
+      "Class_I": 0,
+      "Class_II": 2,
+      "Class_III": 4,
+      "total_events": 6,
+      "manufacturer_id": 14889
+    },
+    {
+      "Class_I": 0,
+      "Class_II": 2,
+      "Class_III": 4,
+      "total_events": 6,
+      "manufacturer_id": 20682
+    }
+  ],
+  "summary_stats": {
+    "total_manufacturers": 10137,
+    "total_events": 33260,
+    "total_class_i": 10222,
+    "total_class_ii": 16213,
+    "total_class_iii": 6825
+  }
+}
