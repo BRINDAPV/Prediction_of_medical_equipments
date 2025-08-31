@@ -20,13 +20,6 @@ import {
   CircularProgress,
   Tabs,
   Tab,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  List,
-  ListItem,
-  ListItemText,
-  Divider,
   Button,
 } from '@mui/material';
 import {
@@ -36,7 +29,6 @@ import {
   CheckCircle,
   TrendingUp,
   TrendingDown,
-  ExpandMore,
   Download,
   Assessment,
   Business,
@@ -53,8 +45,6 @@ import {
   PieChart,
   Pie,
   Cell,
-  LineChart,
-  Line,
 } from 'recharts';
 
 const ManufacturerDashboard = () => {
@@ -225,75 +215,26 @@ const ManufacturerDashboard = () => {
 
       {/* Summary Statistics */}
       <Grid container spacing={3} sx={{ mb: 3 }}>
-        <Grid item xs={12} md={2.4}>
-          <Card sx={{ borderLeft: '4px solid #1976d2' }}>
-            <CardContent>
-              <Typography color="textSecondary" gutterBottom>
-                Total Manufacturers
-              </Typography>
-              <Typography variant="h4" color="primary">
-                {manufacturerData.summary_stats.total_manufacturers.toLocaleString()}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={2.4}>
-          <Card sx={{ borderLeft: '4px solid #f44336' }}>
-            <CardContent>
-              <Typography color="textSecondary" gutterBottom>
-                Class I Incidents
-              </Typography>
-              <Typography variant="h4" color="error">
-                {manufacturerData.summary_stats.total_class_i.toLocaleString()}
-              </Typography>
-              <Typography variant="body2">
-                Most Severe
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={2.4}>
-          <Card sx={{ borderLeft: '4px solid #ff9800' }}>
-            <CardContent>
-              <Typography color="textSecondary" gutterBottom>
-                Class II Incidents
-              </Typography>
-              <Typography variant="h4" color="warning.main">
-                {manufacturerData.summary_stats.total_class_ii.toLocaleString()}
-              </Typography>
-              <Typography variant="body2">
-                Moderate
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={2.4}>
-          <Card sx={{ borderLeft: '4px solid #4caf50' }}>
-            <CardContent>
-              <Typography color="textSecondary" gutterBottom>
-                Class III Incidents
-              </Typography>
-              <Typography variant="h4" color="success.main">
-                {manufacturerData.summary_stats.total_class_iii.toLocaleString()}
-              </Typography>
-              <Typography variant="body2">
-                Least Severe
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={2.4}>
-          <Card sx={{ borderLeft: '4px solid #9c27b0' }}>
-            <CardContent>
-              <Typography color="textSecondary" gutterBottom>
-                Total Events
-              </Typography>
-              <Typography variant="h4" color="secondary">
-                {manufacturerData.summary_stats.total_events.toLocaleString()}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
+        {[
+          { label: 'Total Manufacturers', value: manufacturerData.summary_stats.total_manufacturers, color: '#1976d2' },
+          { label: 'Class I Incidents', value: manufacturerData.summary_stats.total_class_i, color: '#f44336' },
+          { label: 'Class II Incidents', value: manufacturerData.summary_stats.total_class_ii, color: '#ff9800' },
+          { label: 'Class III Incidents', value: manufacturerData.summary_stats.total_class_iii, color: '#4caf50' },
+          { label: 'Total Events', value: manufacturerData.summary_stats.total_events, color: '#9c27b0' }
+        ].map((stat, index) => (
+          <Grid item xs={12} sm={6} md={2.4} key={index}>
+            <Card sx={{ borderLeft: `4px solid ${stat.color}`, minHeight: 120 }}>
+              <CardContent>
+                <Typography color="textSecondary" gutterBottom>
+                  {stat.label}
+                </Typography>
+                <Typography variant="h4" color="textPrimary">
+                  {stat.value.toLocaleString()}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
       </Grid>
 
       {/* Priority Explanation */}
@@ -394,65 +335,34 @@ const ManufacturerDashboard = () => {
       </Card>
 
       {/* Charts */}
-      <Grid container spacing={3} sx={{ mb: 3 }}>
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Top 20 Manufacturers - Incident Distribution
-              </Typography>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={chartData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="manufacturer_id" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="Class_I" fill="#f44336" name="Class I" />
-                  <Bar dataKey="Class_II" fill="#ff9800" name="Class II" />
-                  <Bar dataKey="Class_III" fill="#4caf50" name="Class III" />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Classification Distribution
-              </Typography>
-              <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                  <Pie
-                    data={[
-                      { name: 'Class I', value: manufacturerData.summary_stats.total_class_i, color: '#f44336' },
-                      { name: 'Class II', value: manufacturerData.summary_stats.total_class_ii, color: '#ff9800' },
-                      { name: 'Class III', value: manufacturerData.summary_stats.total_class_iii, color: '#4caf50' },
-                    ]}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    label={({ name, value }) => `${name}: ${value.toLocaleString()}`}
-                    outerRadius={80}
-                    fill="#8884d8"
-                    dataKey="value"
-                  >
-                    {[
-                      { name: 'Class I', value: manufacturerData.summary_stats.total_class_i, color: '#f44336' },
-                      { name: 'Class II', value: manufacturerData.summary_stats.total_class_ii, color: '#ff9800' },
-                      { name: 'Class III', value: manufacturerData.summary_stats.total_class_iii, color: '#4caf50' },
-                    ].map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
+<Grid container spacing={3} sx={{ mb: 3 }}>
+  <Grid item xs={12}>
+    <Card>
+      <CardContent>
+        <Typography variant="h6" gutterBottom>
+          Top 20 Manufacturers - Incident Distribution
+        </Typography>
+        <ResponsiveContainer width="100%" height={400}>
+          <BarChart
+            data={chartData}
+            barCategoryGap="20%"  // Equal spacing between manufacturers
+            barGap={0}            // Bars evenly stacked
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="manufacturer_id" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="Class_I" fill="#f44336" name="Class I" />
+            <Bar dataKey="Class_II" fill="#ff9800" name="Class II" />
+            <Bar dataKey="Class_III" fill="#4caf50" name="Class III" />
+          </BarChart>
+        </ResponsiveContainer>
+      </CardContent>
+    </Card>
+  </Grid>
+</Grid>
+
 
       {/* Data Table */}
       <Card>

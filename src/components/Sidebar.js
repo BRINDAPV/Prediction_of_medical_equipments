@@ -14,6 +14,11 @@ import WarningIcon from '@mui/icons-material/Warning';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import BusinessIcon from '@mui/icons-material/Business';
+import BuildIcon from '@mui/icons-material/Build';
+import TimelineIcon from '@mui/icons-material/Timeline';
+import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
+import SettingsIcon from '@mui/icons-material/Settings';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew'; // Fixed icon
 
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -24,39 +29,28 @@ const Sidebar = ({ open, onToggle }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Combined menu items
   const menuItems = [
-    {
-      text: 'Dashboard',
-      icon: <DashboardIcon />,
-      path: '/',
-    },
-    {
-      text: 'Manufacturer Analysis',
-      icon: <BusinessIcon />,
-      path: '/manufacturers',
-    },
-    {
-      text: 'Major Failures',
-      icon: <WarningIcon />,
-      path: '/failures',
-    },
-    {
-      text: 'Visualizations',
-      icon: <BarChartIcon />,
-      path: '/visualizations',
-    },
-    {
-      text: 'Reports',
-      icon: <AssessmentIcon />,
-      path: '/reports',
-    },
+    { text: 'Dashboard', icon: <DashboardIcon />, path: '/' },
+    { text: 'Manufacturer Analysis', icon: <BusinessIcon />, path: '/manufacturers' },
+    { text: 'Major Failures', icon: <WarningIcon />, path: '/failures' },
+    { text: 'Visualizations', icon: <BarChartIcon />, path: '/visualizations' },
+    { text: 'Reports', icon: <AssessmentIcon />, path: '/reports' },
+
+    // Predictive Failure Items
+    { text: 'Equipment Risk Overview', icon: <BuildIcon />, path: '/risk-overview' },
+    { text: 'Predicted Failures', icon: <WarningIcon />, path: '/predicted-failures' },
+    { text: 'Maintenance & Preventive Actions', icon: <BuildIcon />, path: '/maintenance' },
+    { text: 'Failure Logs & Prediction Accuracy', icon: <ReportGmailerrorredIcon />, path: '/failure-logs' },
+    { text: 'Analytics & Reports', icon: <TimelineIcon />, path: '/analytics-reports' },
+    { text: 'Regulatory Compliance & Alerts', icon: <AssessmentIcon />, path: '/regulatory-alerts' },
+    { text: 'Settings / Admin', icon: <SettingsIcon />, path: '/settings' },
+    { text: 'Modal Examples', icon: <OpenInNewIcon />, path: '/modal-example' }, // Fixed
   ];
 
   const handleItemClick = (path) => {
     navigate(path);
-    if (window.innerWidth < 960) {
-      onToggle();
-    }
+    if (window.innerWidth < 960 && onToggle) onToggle();
   };
 
   const isActive = (path) => {
@@ -72,8 +66,8 @@ const Sidebar = ({ open, onToggle }) => {
         "& .MuiDrawer-paper": {
           width: drawerWidth,
           boxSizing: "border-box",
-          marginTop: "64px", // ✅ Pushes sidebar below the Header
-          height: "calc(100% - 64px)", // ✅ Prevents overflow below screen
+          marginTop: "64px",
+          height: "calc(100% - 64px)",
         },
       }}
     >
