@@ -1,292 +1,193 @@
-import React, { useState, useEffect } from 'react';
+// src/components/Dashboard.js
+import React, { useState, useEffect, useRef } from "react";
 import {
   Box,
   Grid,
   Card,
   CardContent,
   Typography,
-  Paper,
   Table,
-  TableBody,
-  TableCell,
-  TableContainer,
   TableHead,
+  TableBody,
   TableRow,
+  TableCell,
   TablePagination,
-  TextField,
-  InputAdornment,
   Chip,
-  Alert,
-  CircularProgress,
-} from '@mui/material';
-import { Search, Warning } from '@mui/icons-material';
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-} from 'recharts';
-import { fetchCompanies, fetchFailures } from '../services/api';
+} from "@mui/material";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 
 const Dashboard = () => {
-  const [companies, setCompanies] = useState([]);
-  const [failures, setFailures] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(8); // default to 8 rows per page
+  const leftRef = useRef(null);
+  const [leftHeight, setLeftHeight] = useState(0);
 
+  // Update height of left column dynamically
   useEffect(() => {
-    loadData();
+    if (leftRef.current) setLeftHeight(leftRef.current.clientHeight);
+    const handleResize = () => {
+      if (leftRef.current) setLeftHeight(leftRef.current.clientHeight);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const loadData = async () => {
-    try {
-      setLoading(true);
-      const [companiesData, failuresData] = await Promise.all([
-        fetchCompanies(),
-        fetchFailures(),
-      ]);
-      setCompanies(companiesData);
-      setFailures(failuresData);
-    } catch (err) {
-      setError('Failed to load data. Using mock data instead.');
-      loadMockData();
-    } finally {
-      setLoading(false);
-    }
+  // Mock data
+  const stats = {
+    total_manufacturers: 12,
+    total_devices: 56,
+    total_failures: 8,
+    total_parent_companies: 4,
+    total_representatives: 10,
   };
 
-  const loadMockData = () => {
-    const mockCompanies = [
-      { id: 1, name: 'MedTech Solutions', parent_company: 'MedTech Corp', address: '123 Medical Dr', representative: 'John Doe', source: 'FDA', created_at: '2024-01-01' },
-      { id: 2, name: 'HealthCare Devices', parent_company: 'HealthCare Inc', address: '456 Health Ave', representative: 'Jane Smith', source: 'FDA', created_at: '2024-01-02' },
-      { id: 3, name: 'BioMedical Systems', parent_company: 'BioMedical Ltd', address: '789 Bio St', representative: 'Bob Johnson', source: 'FDA', created_at: '2024-01-03' },
-      { id: 4, name: 'LifeSupport Tech', parent_company: 'LifeSupport Corp', address: '321 Life Blvd', representative: 'Alice Brown', source: 'FDA', created_at: '2024-01-04' },
-      { id: 5, name: 'Emergency Medical', parent_company: 'Emergency Inc', address: '654 Emergency Way', representative: 'Charlie Wilson', source: 'FDA', created_at: '2024-01-05' },
-    ];
+  const parentCompanies = [
+    { name: "Parent A", count: 5 },
+    { name: "Parent B", count: 3 },
+    { name: "Parent C", count: 2 },
+    { name: "Parent D", count: 2 },
+  ];
 
-    const mockFailures = [
-      { company: 'MedTech Solutions', failures: 15, severity: 'high' },
-      { company: 'HealthCare Devices', failures: 8, severity: 'medium' },
-      { company: 'BioMedical Systems', failures: 22, severity: 'high' },
-      { company: 'LifeSupport Tech', failures: 5, severity: 'low' },
-      { company: 'Emergency Medical', failures: 18, severity: 'high' },
-    ];
+  const failures = [
+    { device: "Device 101", failures: 2 },
+    { device: "Device 102", failures: 1 },
+    { device: "Device 103", failures: 3 },
+    { device: "Device 104", failures: 2 },
+  ];
 
-    setCompanies(mockCompanies);
-    setFailures(mockFailures);
-  };
-
-  const filteredCompanies = companies.filter((company) =>
-    company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    company.parent_company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    company.representative.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const handleChangePage = (event, newPage) => setPage(newPage);
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const getSeverityColor = (severity) => {
-    switch (severity) {
-      case 'high': return 'error';
-      case 'medium': return 'warning';
-      case 'low': return 'success';
-      default: return 'default';
-    }
-  };
-
-  const chartData = failures.map((failure) => ({
-    name: failure.company,
-    failures: failure.failures,
-    severity: failure.severity,
-  }));
-
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
-
-  if (loading) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
-        <CircularProgress />
-      </Box>
-    );
-  }
+  const manufacturers = [
+    { ID: 1, NAME: "Manufacturer A", PARENT_COMPANY: "Parent A", REPRESENTATIVE: "Rep A", ADDRESS: "123 Street", SOURCE: "Manual", CREATED_AT: "2025-01-01", UPDATED_AT: "2025-07-01" },
+    { ID: 2, NAME: "Manufacturer B", PARENT_COMPANY: "Parent B", REPRESENTATIVE: "Rep B", ADDRESS: "456 Avenue", SOURCE: "Manual", CREATED_AT: "2025-02-01", UPDATED_AT: "2025-07-15" },
+    { ID: 3, NAME: "Manufacturer C", PARENT_COMPANY: "Parent A", REPRESENTATIVE: "Rep C", ADDRESS: "789 Boulevard", SOURCE: "Manual", CREATED_AT: "2025-03-01", UPDATED_AT: "2025-07-20" },
+    { ID: 4, NAME: "Manufacturer D", PARENT_COMPANY: "Parent D", REPRESENTATIVE: "Rep D", ADDRESS: "101 Road", SOURCE: "Manual", CREATED_AT: "2025-04-01", UPDATED_AT: "2025-07-25" },
+    { ID: 5, NAME: "Manufacturer E", PARENT_COMPANY: "Parent C", REPRESENTATIVE: "Rep A", ADDRESS: "202 Lane", SOURCE: "Manual", CREATED_AT: "2025-05-01", UPDATED_AT: "2025-07-30" },
+    { ID: 6, NAME: "Manufacturer F", PARENT_COMPANY: "Parent B", REPRESENTATIVE: "Rep B", ADDRESS: "303 Circle", SOURCE: "Manual", CREATED_AT: "2025-06-01", UPDATED_AT: "2025-07-31" },
+    { ID: 7, NAME: "Manufacturer G", PARENT_COMPANY: "Parent A", REPRESENTATIVE: "Rep C", ADDRESS: "404 Square", SOURCE: "Manual", CREATED_AT: "2025-06-15", UPDATED_AT: "2025-08-01" },
+    { ID: 8, NAME: "Manufacturer H", PARENT_COMPANY: "Parent D", REPRESENTATIVE: "Rep D", ADDRESS: "505 Street", SOURCE: "Manual", CREATED_AT: "2025-06-20", UPDATED_AT: "2025-08-02" },
+    { ID: 9, NAME: "Manufacturer I", PARENT_COMPANY: "Parent C", REPRESENTATIVE: "Rep A", ADDRESS: "606 Avenue", SOURCE: "Manual", CREATED_AT: "2025-07-01", UPDATED_AT: "2025-08-05" },
+  ];
 
   return (
-    <Box>
+    <Box sx={{ flexGrow: 1, p: 3 }}>
       <Typography variant="h4" gutterBottom>
-        Dashboard Overview
+        Manufacturers Dashboard
       </Typography>
 
-      {error && (
-        <Alert severity="warning" sx={{ mb: 3 }}>
-          {error}
-        </Alert>
-      )}
+      {/* KPI Cards */}
+      <Grid container spacing={2} mb={3}>
+        {[
+          { title: "Total Manufacturers", value: stats.total_manufacturers },
+          { title: "Total Devices", value: stats.total_devices },
+          { title: "Total Failures", value: stats.total_failures },
+          { title: "Parent Companies", value: stats.total_parent_companies },
+          { title: "Active Representatives", value: stats.total_representatives },
+        ].map((kpi, idx) => (
+          <Grid item xs={12} sm={6} md={2.4} key={idx}>
+            <Card sx={{ height: 120, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <CardContent sx={{ textAlign: "center" }}>
+                <Typography variant="h6">{kpi.title}</Typography>
+                <Typography variant="h4">{kpi.value}</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
 
-      {/* Major Failure Companies */}
-      <Card sx={{ mb: 3 }}>
-        <CardContent>
-          <Typography variant="h6" gutterBottom>
-            Major Failure Companies
-          </Typography>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-            {failures
-              .filter((f) => f.severity === 'high')
-              .map((failure, index) => (
-                <Chip
-                  key={index}
-                  icon={<Warning />}
-                  label={`${failure.company} (${failure.failures} failures)`}
-                  color="error"
-                  variant="outlined"
-                />
-              ))}
-          </Box>
-        </CardContent>
-      </Card>
-
-      {/* Charts */}
-      <Grid container spacing={3} sx={{ mb: 3 }}>
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Device Faults by Company
-              </Typography>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={chartData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="failures" fill="#8884d8" />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
+      {/* Three-container layout */}
+      <Grid container spacing={2}>
+        {/* Left column */}
+        <Grid item xs={12} md={6} ref={leftRef} container direction="column" spacing={2}>
+          <Grid item>
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>
+                  Top Parent Companies
+                </Typography>
+                <ResponsiveContainer width="100%" height={250}>
+                  <BarChart data={parentCompanies}>
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="count" fill="#1976d2" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item>
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>
+                  Major Failures
+                </Typography>
+                <ResponsiveContainer width="100%" height={250}>
+                  <BarChart data={failures}>
+                    <XAxis dataKey="device" />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="failures" fill="#f44336" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </Grid>
         </Grid>
 
+        {/* Right column */}
         <Grid item xs={12} md={6}>
-          <Card>
+          <Card sx={{ minHeight: leftHeight }}>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Failure Distribution
+                Manufacturers Details
               </Typography>
-              <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                  <Pie
-                    data={chartData}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                    outerRadius={80}
-                    fill="#8884d8"
-                    dataKey="failures"
-                  >
-                    {chartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>ID</TableCell>
+                    <TableCell>Name</TableCell>
+                    <TableCell>Parent Company</TableCell>
+                    <TableCell>Representative</TableCell>
+                    <TableCell>Address</TableCell>
+                    <TableCell>Source</TableCell>
+                    <TableCell>Created</TableCell>
+                    <TableCell>Updated</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {manufacturers
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row) => (
+                      <TableRow key={row.ID}>
+                        <TableCell>{row.ID}</TableCell>
+                        <TableCell>{row.NAME}</TableCell>
+                        <TableCell>{row.PARENT_COMPANY}</TableCell>
+                        <TableCell>{row.REPRESENTATIVE}</TableCell>
+                        <TableCell>{row.ADDRESS}</TableCell>
+                        <TableCell>
+                          <Chip label={row.SOURCE} size="small" color="primary" />
+                        </TableCell>
+                        <TableCell>{row.CREATED_AT}</TableCell>
+                        <TableCell>{row.UPDATED_AT}</TableCell>
+                      </TableRow>
                     ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
+                </TableBody>
+              </Table>
+              <TablePagination
+                component="div"
+                count={manufacturers.length}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                onPageChange={(_, newPage) => setPage(newPage)}
+                onRowsPerPageChange={(e) => {
+                  setRowsPerPage(parseInt(e.target.value, 10));
+                  setPage(0);
+                }}
+                rowsPerPageOptions={[5, 8, 10]} // allow switching to 8 or more rows
+              />
             </CardContent>
           </Card>
         </Grid>
       </Grid>
-
-      {/* Data Table */}
-      <Card>
-        <CardContent>
-          <Typography variant="h6" gutterBottom>
-            Company Data
-          </Typography>
-
-          <TextField
-            fullWidth
-            variant="outlined"
-            placeholder="Search companies..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            sx={{ mb: 2 }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Search />
-                </InputAdornment>
-              ),
-            }}
-          />
-
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>ID</TableCell>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Parent Company</TableCell>
-                  <TableCell>Address</TableCell>
-                  <TableCell>Representative</TableCell>
-                  <TableCell>Source</TableCell>
-                  <TableCell>Created At</TableCell>
-                  <TableCell>Severity</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {filteredCompanies
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((company) => {
-                    const failure = failures.find((f) => f.company === company.name);
-                    return (
-                      <TableRow key={company.id}>
-                        <TableCell>{company.id}</TableCell>
-                        <TableCell>{company.name}</TableCell>
-                        <TableCell>{company.parent_company}</TableCell>
-                        <TableCell>{company.address}</TableCell>
-                        <TableCell>{company.representative}</TableCell>
-                        <TableCell>{company.source}</TableCell>
-                        <TableCell>{company.created_at}</TableCell>
-                        <TableCell>
-                          {failure && (
-                            <Chip
-                              label={failure.severity}
-                              color={getSeverityColor(failure.severity)}
-                              size="small"
-                            />
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={filteredCompanies.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </CardContent>
-      </Card>
     </Box>
   );
 };
